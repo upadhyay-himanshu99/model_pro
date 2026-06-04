@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banavi – Female Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast"></div>
+
+<!-- CART OVERLAY & PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <h2>Your Bag 🛍️</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">Your bag is empty ✨</div>
+  </div>
+  <div id="cartFoot" style="display:none;border-top:1px solid var(--border);padding:1.25rem">
+    <div class="cart-row"><span>Subtotal</span><span id="cSub">₹0</span></div>
+    <div class="cart-row"><span>Shipping</span><span style="color:var(--success)">FREE</span></div>
+    <div class="cart-row grand"><span>Total</span><span id="cTotal">₹0</span></div>
+    <button class="btn btn-dark btn-full" style="margin-top:.85rem" onclick="goTo('payment');toggleCart()">Proceed to Payment →</button>
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="logo" onclick="goTo('home')">BANAVI<span>.</span></div>
+  <ul class="nav-links">
+    <li><a onclick="goTo('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="goTo('shop')" id="nav-shop">Shop</a></li>
+    <li><a onclick="goTo('profile');showProfileSection('orders')" id="nav-orders">My Orders</a></li>
+    <li><a onclick="goTo('profile')" id="nav-profile">Profile</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-icon" onclick="goTo('profile');showProfileSection('wishlist')">♡</button>
+    <button class="nav-icon" onclick="toggleCart()" style="position:relative">
+      🛍️<span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="nav-icon" onclick="goTo('login')">👤</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">New Collection 2025</div>
+      <h1>Elegant <em>Ethnic</em><br>Wear for Every Woman</h1>
+      <p>Handcrafted kurtis, sarees & lehengas that blend tradition with modern elegance.</p>
+      <div class="hero-btns">
+        <button class="btn btn-dark" onclick="goTo('shop')">Shop Now</button>
+        <button class="btn btn-outline" onclick="showToast('✨ Lookbook coming soon!')">View Lookbook</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="background:#fff">
+    <div class="section-header">
+      <p>Browse by</p>
+      <h2>Categories</h2>
+    </div>
+    <div class="cats">
+      <div class="cat-card" onclick="goTo('shop');setFilter('Kurti')">
+        <div class="cat-icon">👗</div>
+        <h3>Kurtis</h3>
+        <p>48 styles</p>
+      </div>
+      <div class="cat-card" onclick="goTo('shop');setFilter('Saree')">
+        <div class="cat-icon">🥻</div>
+        <h3>Sarees</h3>
+        <p>36 styles</p>
+      </div>
+      <div class="cat-card" onclick="goTo('shop');setFilter('Lehenga')">
+        <div class="cat-icon">👘</div>
+        <h3>Lehengas</h3>
+        <p>24 styles</p>
+      </div>
+      <div class="cat-card" onclick="goTo('shop');setFilter('Tops')">
+        <div class="cat-icon">👚</div>
+        <h3>Tops & Sets</h3>
+        <p>52 styles</p>
+      </div>
+      <div class="cat-card" onclick="showToast('Dupattas coming soon!')">
+        <div class="cat-icon">🧣</div>
+        <h3>Dupattas</h3>
+        <p>18 styles</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <p>Handpicked for you</p>
+      <h2>Featured Products</h2>
+    </div>
+    <div class="products-grid" id="featuredGrid"></div>
+  </section>
+
+  <div class="promo-banner">
+    <h2>Get 15% Off Your First Order</h2>
+    <p>Join Banavi & receive exclusive offers and new arrivals</p>
+    <div class="promo-input">
+      <input type="email" placeholder="Enter your email address">
+      <button onclick="showToast('🎉 Welcome to Banavi!')">Subscribe</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 <span>Banavi</span> – Female Fashion. Made with ❤️ in Gujarat, India &nbsp;|&nbsp; Free shipping ₹999+ &nbsp;|&nbsp; Easy returns &nbsp;|&nbsp; COD available</p>
+  </footer>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <section class="section">
+    <div class="section-header">
+      <p>Explore our</p>
+      <h2>Full Collection</h2>
+    </div>
+    <div class="filters" id="filterBtns">
+      <button class="filter-btn active" onclick="setFilter('All',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Kurti',this)">Kurti</button>
+      <button class="filter-btn" onclick="setFilter('Saree',this)">Saree</button>
+      <button class="filter-btn" onclick="setFilter('Lehenga',this)">Lehenga</button>
+      <button class="filter-btn" onclick="setFilter('Tops',this)">Tops</button>
+      <button class="filter-btn" onclick="setFilter('Sale',this)">🏷️ Sale</button>
+    </div>
+    <div class="products-grid" id="shopGrid"></div>
+  </section>
+  <footer>
+    <p>© 2025 <span>Banavi</span> – Female Fashion</p>
+  </footer>
+</div>
+
+<!-- PAYMENT PAGE -->
+<div class="page" id="page-payment">
+  <section class="section">
+    <div class="section-header">
+      <p>Almost there</p>
+      <h2>Checkout</h2>
+    </div>
+
+    <div id="paymentForm">
+      <div class="pay-grid">
+        <div>
+          <div class="pay-card">
+            <h3>📍 Delivery Address</h3>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Priya Sharma" id="payName">
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="+91 98765 43210" id="payPhone">
+            </div>
+            <div class="form-group">
+              <label>Address Line 1</label>
+              <input type="text" placeholder="House no, Street name" id="payAddr1">
+            </div>
+            <div class="form-group">
+              <label>Address Line 2</label>
+              <input type="text" placeholder="Area, Landmark (optional)">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" placeholder="Anand" id="payCity">
+              </div>
+              <div class="form-group">
+                <label>Pincode</label>
+                <input type="text" placeholder="388001" id="payPin">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <select>
+                <option>Gujarat</option>
+                <option>Maharashtra</option>
+                <option>Rajasthan</option>
+                <option>Delhi</option>
+                <option>Karnataka</option>
+                <option>Tamil Nadu</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pay-card" style="margin-top:1rem">
+            <h3>💳 Payment Method</h3>
+            <div class="pay-methods">
+              <div class="pay-method sel" onclick="selPay(this)">
+                <input type="radio" name="pm" value="UPI" checked>
+                <div class="pay-method-icon">📱</div>
+                <div class="pay-method-text">
+                  <h4>UPI / GPay / PhonePe</h4>
+                  <p>Instant payment via UPI</p>
+                </div>
+              </div>
+              <div class="pay-method" onclick="selPay(this)">
+                <input type="radio" name="pm" value="Card">
+                <div class="pay-method-icon">💳</div>
+                <div class="pay-method-text">
+                  <h4>Credit / Debit Card</h4>
+                  <p>Visa, Mastercard, RuPay</p>
+                </div>
+              </div>
+              <div class="pay-method" onclick="selPay(this)">
+                <input type="radio" name="pm" value="Net Banking">
+                <div class="pay-method-icon">🏦</div>
+                <div class="pay-method-text">
+                  <h4>Net Banking</h4>
+                  <p>All major Indian banks</p>
+                </div>
+              </div>
+              <div class="pay-method" onclick="selPay(this)">
+                <input type="radio" name="pm" value="COD">
+                <div class="pay-method-icon">💵</div>
+                <div class="pay-method-text">
+                  <h4>Cash on Delivery</h4>
+                  <p>Pay when you receive</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pay-card">
+            <h3>🛍️ Order Summary</h3>
+            <div id="payItems"></div>
+            <hr class="divider">
+            <div class="summary-row"><span>Subtotal</span><span id="paySub">₹0</span></div>
+            <div class="summary-row"><span>Shipping</span><span style="color:var(--success)">FREE</span></div>
+            <div class="summary-row"><span>Discount</span><span id="payDiscount" style="color:var(--rose-dark)">−₹0</span></div>
+            <div class="summary-row grand"><span>Total</span><span id="payTotal">₹0</span></div>
+            <div class="form-group" style="margin-top:1rem">
+              <label>Promo Code</label>
+              <div style="display:flex;gap:.5rem">
+                <input type="text" placeholder="BANAVI15" id="promoInput">
+                <button class="btn btn-outline btn-sm" onclick="applyPromo()">Apply</button>
+              </div>
+            </div>
+            <button class="btn btn-rose btn-full" style="margin-top:1rem;padding:14px" onclick="placeOrder()">Place Order →</button>
+            <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem">🔒 100% Secure & Encrypted Payment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="orderSuccess" style="display:none">
+      <div class="success-box">
+        <div class="success-icon">🎉</div>
+        <h2>Order Placed!</h2>
+        <div class="order-id" id="successOrderId">BNV-000000</div>
+        <p>Thank you for shopping at Banavi! Your order has been confirmed and will be delivered within 3–5 business days.</p>
+        <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap">
+          <button class="btn btn-dark" onclick="goTo('profile');showProfileSection('orders')">View My Orders</button>
+          <button class="btn btn-outline" onclick="goTo('shop')">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="page" id="page-profile">
+  <section class="section">
+    <div class="profile-layout">
+      <div class="profile-sidebar">
+        <div class="profile-avatar" id="profileAvatar">P</div>
+        <div class="profile-name" id="profileNameDisplay">Priya Sharma</div>
+        <div class="profile-email" id="profileEmailDisplay">priya@email.com</div>
+        <ul class="profile-nav">
+          <li class="active" onclick="showProfileSection('info',this)"><span>👤</span> My Profile</li>
+          <li onclick="showProfileSection('orders',this)"><span>📦</span> Order History</li>
+          <li onclick="showProfileSection('wishlist',this)"><span>♡</span> Wishlist</li>
+          <li onclick="showProfileSection('address',this)"><span>📍</span> Saved Addresses</li>
+          <li onclick="showProfileSection('settings',this)"><span>⚙️</span> Settings</li>
+          <li onclick="goTo('login')"><span>🚪</span> Logout</li>
+        </ul>
+      </div>
+
+      <div class="profile-main">
+        <!-- MY PROFILE SECTION -->
+        <div class="profile-section active" id="ps-info">
+          <h3>My Profile</h3>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+            <div class="profile-avatar" style="width:80px;height:80px;font-size:32px;flex-shrink:0" id="bigAvatar">P</div>
+            <div>
+              <div style="font-family:'Playfair Display',serif;font-size:20px" id="profileBigName">Priya Sharma</div>
+              <div style="font-size:12px;color:var(--muted)" id="profileBigEmail">priya@email.com</div>
+              <div style="font-size:11px;color:var(--success);margin-top:4px">✓ Verified Account</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="pFirstName" value="Priya">
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="pLastName" value="Sharma">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="pEmail" value="priya@email.com">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="pPhone" value="+91 98765 43210">
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="pDob" value="1995-03-15">
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button class="btn btn-dark" onclick="saveProfile()">Save Changes</button>
+        </div>
+
+        <!-- ORDER HISTORY SECTION -->
+        <div class="profile-section" id="ps-orders">
+          <h3>Order History</h3>
+          <div id="orderHistoryList"></div>
+        </div>
+
+        <!-- WISHLIST SECTION -->
+        <div class="profile-section" id="ps-wishlist">
+          <h3>My Wishlist</h3>
+          <div class="wish-grid" id="wishlistGrid"></div>
+          <div id="wishEmpty" style="display:none;color:var(--muted);font-size:14px;padding:2rem 0;text-align:center">No items in wishlist yet ♡</div>
+        </div>
+
+        <!-- SAVED ADDRESSES SECTION -->
+        <div class="profile-section" id="ps-address">
+          <h3>Saved Addresses</h3>
+          <div style="border:1px solid var(--border);border-radius:4px;padding:1rem;margin-bottom:1rem">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div>
+                <div style="font-size:12px;background:var(--rose);color:var(--rose-dark);padding:2px 10px;border-radius:20px;display:inline-block;margin-bottom:.5rem">Default</div>
+                <div style="font-size:14px;font-weight:500">Priya Sharma</div>
+                <div style="font-size:13px;color:var(--muted);line-height:1.6">42, Shivam Society, Near Bus Stand<br>Anand, Gujarat – 388001<br>+91 98765 43210</div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="showToast('Edit address feature coming soon!')">Edit</button>
+            </div>
+          </div>
+          <button class="btn btn-outline" onclick="showToast('➕ Add address feature coming soon!')">+ Add New Address</button>
+        </div>
+
+        <!-- SETTINGS SECTION -->
+        <div class="profile-section" id="ps-settings">
+          <h3>Account Settings</h3>
+          <div class="form-group" style="margin-bottom:1.5rem">
+            <label>Change Password</label>
+            <input type="password" placeholder="Current password">
+            <input type="password" placeholder="New password" style="margin-top:.5rem">
+            <input type="password" placeholder="Confirm new password" style="margin-top:.5rem">
+          </div>
+          <div style="border:1px solid var(--border);border-radius:4px;padding:1rem;margin-bottom:1rem">
+            <div style="font-size:14px;font-weight:500;margin-bottom:.25rem">Notifications</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:.5rem">Receive order updates & offers</div>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:13px;cursor:pointer">
+              <input type="checkbox" checked> Email notifications
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:13px;margin-top:.35rem;cursor:pointer">
+              <input type="checkbox" checked> SMS notifications
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:13px;margin-top:.35rem;cursor:pointer">
+              <input type="checkbox"> WhatsApp updates
+            </label>
+          </div>
+          <button class="btn btn-dark" onclick="showToast('✅ Settings saved!')">Save Settings</button>
+          <br><br>
+          <button class="btn btn-outline" style="color:#c0392b;border-color:#c0392b" onclick="showToast('Account deletion request sent')">Delete Account</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- LOGIN PAGE -->
+<div class="page" id="page-login">
+  <section class="section">
+    <div class="auth-box">
+      <div style="font-size:36px;margin-bottom:.5rem">👗</div>
+      <h2>Welcome to Banavi</h2>
+      <p>Sign in to your account or create a new one</p>
+      
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuth('login',this)">Sign In</button>
+        <button class="auth-tab" onclick="switchAuth('signup',this)">Sign Up</button>
+      </div>
+
+      <div class="auth-form active" id="af-login">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="priya@email.com" id="loginEmail">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" id="loginPassword">
+        </div>
+        <div style="text-align:right;margin-bottom:1rem">
+          <a href="#" style="font-size:12px;color:var(--rose-dark);text-decoration:none">Forgot password?</a>
+        </div>
+        <button class="btn btn-dark btn-full" onclick="doLogin()">Sign In</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:1rem">Or continue with</p>
+        <button class="btn btn-outline btn-full" style="margin-top:.5rem" onclick="doLogin()">🇬 Continue with Google</button>
+      </div>
+
+      <div class="auth-form" id="af-signup">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Priya" id="signupFirstName">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Sharma" id="signupLastName">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="priya@email.com" id="signupEmail">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="+91 98765 43210" id="signupPhone">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" placeholder="Create password" id="signupPassword">
+        </div>
+        <button class="btn btn-rose btn-full" onclick="doSignup()">Create Account</button>
+        <p style="font-size:11px;color:var(--muted);margin-top:.75rem">By signing up, you agree to our Terms & Privacy Policy</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SCRIPTS -->
+<script src="assets/js/api.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/payment.js"></script>
+<script src="assets/js/profile.js"></script>
+
+</body>
+</html>

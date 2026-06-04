@@ -1,0 +1,5 @@
+/* Additional styling for SignUp component if needed */
+.signup-card form {
+  display: flex;
+  flex-direction: column;
+}
